@@ -91,8 +91,8 @@ app.get("/api/v1/profile", getUser);
 app.get("/api/v1/profile/:id", getUser);
 
 const __dirname = path.resolve();
-app.use("/", express.static(path.join(__dirname, "./web/build")));
-app.use("*", express.static(path.join(__dirname, "./web/build")));
+app.use("/", express.static(path.join(__dirname, "./build")));
+app.use("*", express.static(path.join(__dirname, "./build")));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
