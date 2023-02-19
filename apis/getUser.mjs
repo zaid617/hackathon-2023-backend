@@ -1,9 +1,10 @@
 import express from "express";
-import { userModel } from "../database/model.mjs";
+import { userModel } from "../dbrepo/models.mjs";
 
 const router = express();
 
 const getUser = async (req, res) => {
+  
   let _id = "";
   if (req.params.id) {
     _id = req.params.id;
@@ -13,13 +14,23 @@ const getUser = async (req, res) => {
 
   try {
     const user = await userModel
-      .findOne({ _id: _id }, "email firstName lastName isVerified -_id")
+      .findOne({ _id: _id }, "email firstName isAdmin isVerified -_id")
       .exec();
     if (!user) {
       res.status(404).send({ message: "user not found" });
       return;
     } else {
-      res.status(200).send(user);
+      res.send({
+        message: "User Login",
+        profile: {
+          firstName: user.firstName,
+          contact: user.contact,
+          email: user.email,
+          _id: user._id,
+          isAdmin: user.isAdmin
+        },
+        })
+      res.status(200)
     }
   } catch (error) {
     res.status(500).send({

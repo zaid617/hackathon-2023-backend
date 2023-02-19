@@ -7,26 +7,6 @@ import { userModel } from "../dbrepo/models.mjs";
 const router = express.Router();
 const SECRET = process.env.SECRET || "topsceret";
 
-router.get('/profile', (req, res) => {
-  userModel.findOne({ email: req.body._decoded.email }, (err, user) => {
-
-      if (err) {
-          res.status(500).send("error in getting database")
-      } else {
-          if (user) {
-              res.send({
-                  firstName: user.firstName,
-                  email: user.email,
-                  _id: user._id,
-                  isAdmin: user.isAdmin
-              });
-          } else {
-              res.send("user not found");
-          }
-      }
-  })
-})
-
 router.post("/signup", (req, res) => {
   let body = req.body;
   
@@ -161,15 +141,6 @@ router.post("/login", (req, res) => {
   );
 });
 router.post("/logout", (req, res) => {
-
-//   both methods can be used at this place
-
-  // res.cookie("Token", " ", {
-  //   maxAge: 0,
-  //   httpOnly: true,
-  //   sameSite: 'none',
-  //   secure: true
-  // });
 
   res.clearCookie("Token",{
     httpOnly: true,
