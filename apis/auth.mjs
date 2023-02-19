@@ -30,7 +30,6 @@ router.get('/profile', (req, res) => {
 router.post("/signup", (req, res) => {
   let body = req.body;
   
-  
   if (!body.firstName || !body.contact || !body.email || !body.password) {
     res.status(400).send(
       `required fields missing, request example: 
