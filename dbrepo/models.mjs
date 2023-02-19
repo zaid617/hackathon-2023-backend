@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+
+const MONGODBURI = "mongodb+srv://zaid617:abc123456@cluster0.1srlrtd.mongodb.net/hackathonDB?retryWrites=true&w=majority"
+
 let productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   price: Number,
@@ -7,15 +10,16 @@ let productSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
   url: String
 });
-export const productModel = mongoose.model('products', productSchema);
+export const AddProductModel = mongoose.model('products', productSchema);
 
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String },
-  lastName: { type: String },
   email: { type: String, required: true },
+  contact: { type: Number, required: true },
   password: { type: String, required: true },
   isActive: { type: Boolean, default: true },
+  isAdmin: { type: Boolean, default: false },
   createdOn: { type: Date, default: Date.now },
 });
 userSchema.index({ firstName: "text", lastName: "text" });
@@ -29,10 +33,8 @@ const otpSchema = new mongoose.Schema({
 });
 export const otpModel = mongoose.model("Opts", otpSchema);
 
-const mongodbURI =process.env.MONGODBURI;
-console.log(process.env.MONGODBURI);
 mongoose.set("strictQuery", false);
-mongoose.connect(mongodbURI);
+mongoose.connect(MONGODBURI);
 
 mongoose.connection.on("connected", function () {
   console.log("Mongoose connected");

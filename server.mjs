@@ -5,17 +5,16 @@ import authApis from "./apis/auth.mjs";
 import productApis from "./apis/product.mjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import { userModel } from "./dbrepo/model.mjs";
+import { userModel } from "./dbrepo/models.mjs";
 
 const SECRET = process.env.SECRET || "topsceret";
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5001;
 
 app.use(
   cors({
     origin: [
-      "https://resplendent-croissant-d895ff.netlify.app",
-      "https://dainty-banoffee-c78400.netlify.app",
+      "https://final-hackathon-c1283.web.app",
       "http://localhost:3000",
     ],
     credentials: true,

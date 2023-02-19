@@ -1,8 +1,8 @@
 import express from "express";
 import fs from 'fs';
 import mongoose from "mongoose";
-import { AddProductModel } from "../dbrepo/model.mjs";
 import multer from 'multer';
+import { AddProductModel } from "../dbrepo/models.mjs";
 import bucket from "../firebaseAdmin/index.mjs";
 
 const storageConfig = multer.diskStorage({

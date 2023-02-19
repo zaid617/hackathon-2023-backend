@@ -1,23 +1,24 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { userModel } from "../dbrepo/model.mjs";
 import { stringToHash, varifyHash } from "bcrypt-inzi";
 import bucket from "../firebaseAdmin/index.mjs"
+import { userModel } from "../dbrepo/models.mjs";
 
 const router = express.Router();
 const SECRET = process.env.SECRET || "topsceret";
 
 router.get('/profile', (req, res) => {
-  userModel.findOne({ Email: req.body._decoded.Email }, (err, user) => {
+  userModel.findOne({ email: req.body._decoded.email }, (err, user) => {
 
       if (err) {
           res.status(500).send("error in getting database")
       } else {
           if (user) {
               res.send({
-                  name: user.name,
-                  Email: user.Email,
+                  firstName: user.firstName,
+                  email: user.email,
                   _id: user._id,
+                  isAdmin: user.isAdmin
               });
           } else {
               res.send("user not found");
@@ -30,7 +31,7 @@ router.post("/signup", (req, res) => {
   let body = req.body;
   
   
-  if (!body.FullName || !body.Contact || !body.Email || !body.Password) {
+  if (!body.firstName || !body.contact || !body.email || !body.password) {
     res.status(400).send(
       `required fields missing, request example: 
                   {
@@ -43,9 +44,9 @@ router.post("/signup", (req, res) => {
     return;
   }
 
-  req.body.Email = req.body.Email.toLowerCase();
+  req.body.email = req.body.email.toLowerCase();
 
-  userModel.findOne({ Email: body.Email }, (err, data) => {
+  userModel.findOne({ email: body.email }, (err, data) => {
     if (!err) {
       console.log("data: ", data);
 
@@ -53,26 +54,24 @@ router.post("/signup", (req, res) => {
         // user already exist
         console.log("user already exist: ", data);
         res.status(400).send({
-          message: "user already exist,, please try a different Email",
+          message: "user already exist, please try a different Email",
         });
         return;
       } else {
         // user not already exist
         // bcrypt hash technique isley ke ye one incryption he
-        stringToHash(body.Password).then((hashString) => {
+        stringToHash(body.password).then((hashString) => {
           userModel.create(
             {
-              FullName: body.FullName,
-              Contact: body.Contact,
-              Email: body.Email,
-              Password: hashString,
+              firstName: body.firstName,
+              contact: body.contact,
+              email: body.email,
+              password: hashString,
             },
             (err, result) => {
               if (!err) {
-                console.log("data saved: ", result);
                 res.status(201).send({ message: "user is created" });
               } else {
-                console.log("db error: ", err);
                 res.status(500).send({ message: "internal server error" });
               }
             }
@@ -91,7 +90,7 @@ router.post("/login", (req, res) => {
   let body = req.body;
   // if (!body.FullName || !body.Contact || !body.Email || !body.Password) {
 
-  if (!body.Email || !body.Password) {
+  if (!body.email || !body.password) {
     res.status(400).send(
       `required fields missing, request example: 
                   {
@@ -101,24 +100,24 @@ router.post("/login", (req, res) => {
     );
     return;
   }
-  req.body.Email = req.body.Email.toLowerCase();
+  req.body.email = req.body.email.toLowerCase();
 
   userModel.findOne(
-    { Email: body.Email },
-    "FullName Contact Email Password",
+    { email: body.email },
+    "firstName contact email password isAdmin",
     (err, data) => {
       if (!err) {
         console.log("data: ", data);
 
         if (data) {
-          varifyHash(body.Password, data.Password).then((isMatched) => {
+          varifyHash(body.password, data.password).then((isMatched) => {
             console.log("isMatched: ", isMatched);
 
             if (isMatched) {
               var token = jwt.sign(
                 {
                   _id: data._id,
-                  Email: data.Email,
+                  email: data.email,
                   iat: Math.floor(Date.now() / 1000) - 30,
                   exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                 },
@@ -135,10 +134,11 @@ router.post("/login", (req, res) => {
               res.send({
                 message: "login successful",
                 profile: {
-                  FullName: data.FullName,
-                  Contact: data.Contact,
-                  Email: data.Email,
+                  firstName: data.firstName,
+                  contact: data.contact,
+                  email: data.email,
                   _id: data._id,
+                  isAdmin: data.isAdmin
                 },
               });
               return;
@@ -162,7 +162,8 @@ router.post("/login", (req, res) => {
   );
 });
 router.post("/logout", (req, res) => {
-//   dono correct hen
+
+//   both methods can be used at this place
 
   // res.cookie("Token", " ", {
   //   maxAge: 0,

@@ -1,21 +1,22 @@
 {
-  "name": "hackathon-2023",
+  "name": "hackathon-2023-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.mjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zaid617/hackathon-2023.git"
+    "url": "git+https://github.com/zaid617/hackathon-2023-backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zaid617/hackathon-2023/issues"
+    "url": "https://github.com/zaid617/hackathon-2023-backend/issues"
   },
-  "homepage": "https://github.com/zaid617/hackathon-2023#readme",
+  "homepage": "https://github.com/zaid617/hackathon-2023-backend#readme",
   "dependencies": {
     "bcrypt-inzi": "^1.0.7",
     "cookie": "^0.5.0",
