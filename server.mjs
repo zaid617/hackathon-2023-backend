@@ -16,6 +16,7 @@ app.use(
     origin: [
       "https://final-hackathon-c1283.web.app",
       "http://localhost:3000",
+      "*"
     ],
     credentials: true,
   })
