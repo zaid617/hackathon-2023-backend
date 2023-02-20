@@ -5,12 +5,31 @@ const MONGODBURI = "mongodb+srv://zaid617:abc123456@cluster0.1srlrtd.mongodb.net
 
 let productSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  price: Number,
-  description: String,
+  price: { type: Number, required: true },
+  unit: { type: String, required: true },
+  unitValue: { type: Number, required: true },
+  description: { type: String},
+  category: { type: String},
+  url: { type: String},
   createdOn: { type: Date, default: Date.now },
-  url: String
+  
 });
 export const AddProductModel = mongoose.model('products', productSchema);
+
+let userProductsSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  id: { type: String, required: true },
+  price: { type: Number, required: true },
+  unit: { type: String, required: true },
+  unitValue: { type: Number, required: true },
+  status: { type: String , default: "pending"},
+  description: { type: String},
+  category: { type: String},
+  url: { type: String},
+  createdOn: { type: Date, default: Date.now },
+
+});
+export const userProduct = mongoose.model('userProducts', userProductsSchema);
 
 
 const userSchema = new mongoose.Schema({
@@ -25,6 +44,7 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ firstName: "text", lastName: "text" });
 export const userModel = mongoose.model("Users", userSchema);
 
+
 const otpSchema = new mongoose.Schema({
   otp: String,
   email: String,
@@ -32,6 +52,8 @@ const otpSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
 });
 export const otpModel = mongoose.model("Opts", otpSchema);
+
+
 
 mongoose.set("strictQuery", false);
 mongoose.connect(MONGODBURI);

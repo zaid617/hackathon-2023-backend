@@ -1,93 +1,65 @@
 import express from "express";
-import fs from 'fs';
 import mongoose from "mongoose";
-import multer from 'multer';
 import { AddProductModel } from "../dbrepo/models.mjs";
-import bucket from "../firebaseAdmin/index.mjs";
 
-const storageConfig = multer.diskStorage({
-  // destination: "./uploads/",
-  filename: function (req, file, cb) {
-    // console.log("mul-file: ", file);
-    cb(null, `${new Date().getTime()}-${file.originalname}`);
-  },
-});
-var uploadMiddleware = multer({ storage: storageConfig });
 const router = express.Router();
 
-router.post("/product", uploadMiddleware.any(), (req, res) => {
+router.post("/product", (req, res) => {
+  const body = req.body;
+
+      const { name
+        , id
+        , price
+        , unit
+        , unitValue
+        , category
+        , description
+        , url } = body
+
   try {
-    const body = req.body;
-    const token = jwt.decode(req.cookies.Token);
 
     if (
       // validation
-      !body.text
-    ) {
+      !name || !id || !category || !price || !unit || !unitValue || !unitValue )
+      {
       res.status(400).send({
         message: "required parameters missing",
       });
       return;
     }
 
-    bucket.upload(
-      req.files[0].path,
-      {
-        destination: `tweetPictures/${req.files[0].filename}`,
-      },
-      function (err, file, apiResponse) {
-        if (!err) {
-          file
-            .getSignedUrl({
-              action: "read",
-              expires: "03-09-2999",
-            })
-            .then((urlData, err) => {
-              if (!err) {
-                // console.log("public downloadable url: ", urlData[0]); 
+    else{
 
-                try {
-                  fs.unlinkSync(req.files[0].path);
-                  //file removed
-                } catch (err) {
-                  // console.error(err);
-                }
+      AddProductModel.create(
+        {
+          name : name,
+          price : price,
+          unit : unit,
+          category: category,
+          unitValue : unitValue,
+          description : description,
+          url : url,
 
-                AddProductModel.create(
-                  {
-                    // productImage: body.productImage,
-                    productName: body.productName,
-                    productCategory: body.productCategory,
-                    productDec: body.productDec,
-                    unitName: body.unitName,
-                    unitPrice: body.unitPrice,
-                  },
-                  (err, saved) => {
-                    if (!err) {
-                      console.log(saved);
-
-                      res.send({
-                        message: "product added successfully",
-                      });
-                    } else {
-                      res.status(500).send({
-                        message: "server error",
-                      });
-                    }
-                  }
-                );
-              }
-            });
-        } else {
-          // console.log("err: ", err);
-          res.status(500).send();
+        },
+        (err) => {
+          if (!err) {
+            res.status(201).send({ message: "product is added" });
+          } else {
+            res.status(500).send({ message: "internal server error" });
+          }
         }
-      }
-    );
+      );
+
+    }
+
+
   } catch (error) {
-    // console.log("error: ", error);
+    console.log("error: ", error);
   }
+
 });
+
+
 router.get("/products", (req, res) => {
   const userID = new mongoose.Types.ObjectId(req.body.token._id);
   AddProductModel.find(
