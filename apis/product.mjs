@@ -5,22 +5,22 @@ import { AddProductModel } from "../dbrepo/models.mjs";
 const router = express.Router();
 
 router.post("/product", (req, res) => {
-  const body = req.body;
 
-      const { name
-        , id
+      let { 
+        name
         , price
         , unit
         , unitValue
         , category
         , description
-        , url } = body
+        , url } = req.body
+
+        console.log(name, price, unit, unitValue, category, description, url);
 
   try {
 
-    if (
-      // validation
-      !name || !id || !category || !price || !unit || !unitValue || !unitValue )
+    if ( // validation
+      !name || !category || !price || !unit || !unitValue || !unitValue )
       {
       res.status(400).send({
         message: "required parameters missing",
