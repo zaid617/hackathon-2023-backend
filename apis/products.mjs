@@ -80,6 +80,7 @@ router.post("/product", uploadMiddleware.any(), (req, res) => {
   }
 });
 
+
 router.get("/products", (req, res) => {
 
   const userId = new mongoose.Types.ObjectId(req.body.token._id);

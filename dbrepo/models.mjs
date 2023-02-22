@@ -12,6 +12,7 @@ let productSchema = new mongoose.Schema({
   category: { type: String},
   url: { type: String},
   createdOn: { type: Date, default: Date.now },
+  isDeleted: {type:Boolean , default: false}
   
 });
 export const AddProductModel = mongoose.model('products', productSchema);
@@ -27,6 +28,7 @@ let userProductsSchema = new mongoose.Schema({
   category: { type: String},
   url: { type: String},
   createdOn: { type: Date, default: Date.now },
+  isDeleted: {type:Boolean , default: false}
 
 });
 export const userProduct = mongoose.model('userProducts', userProductsSchema);

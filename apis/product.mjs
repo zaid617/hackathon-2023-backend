@@ -4,7 +4,7 @@ import { AddProductModel } from "../dbrepo/models.mjs";
 
 const router = express.Router();
 
-router.post("/product", (req, res) => {
+router.post("/product" , (req, res) => {
 
       let { 
         name
@@ -60,22 +60,28 @@ router.post("/product", (req, res) => {
 });
 
 
-router.get("/products", (req, res) => {
-  const userID = new mongoose.Types.ObjectId(req.body.token._id);
+router.get("/getProducts", (req, res) => {
+
   AddProductModel.find(
-    { owner: userID, isDeleted: false },
-    {},
+
+    { isDeleted: false },{},
+
     {
       sort: { _id: -1 },
       limit: 100,
       skip: 0,
     },
+
     (err, data) => {
+
       if (!err) {
         res.send({
           message: "got all products successfully",
           data: data,
         });
+
+        console.log(data);
+
       } else {
         res.status(500).send({
           message: "server error",
@@ -107,6 +113,8 @@ router.get("/product/:name", (req, res) => {
     }
   });
 });
+
+
 router.delete("/product/:id", (req, res) => {
   const id = req.params.id;
 
