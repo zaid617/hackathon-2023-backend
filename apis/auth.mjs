@@ -83,7 +83,7 @@ router.post("/login", (req, res) => {
 
   userModel.findOne(
     { email: body.email },
-    "firstName contact email password isAdmin",
+    "firstName contact email password isAdmin _id",
     (err, data) => {
       if (!err) {
         console.log("data: ", data);
