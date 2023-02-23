@@ -18,15 +18,16 @@ let productSchema = new mongoose.Schema({
 export const AddProductModel = mongoose.model('products', productSchema);
 
 let userProductsSchema = new mongoose.Schema({
+
   name: { type: String, required: true },
-  id: { type: String, required: true },
+  userId: { type: String, required: true },
   price: { type: Number, required: true },
   unit: { type: String, required: true },
   unitValue: { type: Number, required: true },
-  status: { type: String , default: "pending"},
   description: { type: String},
   category: { type: String},
   url: { type: String},
+  status: { type: String , default: "pending"},
   createdOn: { type: Date, default: Date.now },
   isDeleted: {type:Boolean , default: false}
 

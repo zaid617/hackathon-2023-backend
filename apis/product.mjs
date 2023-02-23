@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import { AddProductModel } from "../dbrepo/models.mjs";
+import { userProduct } from "../dbrepo/models.mjs";
+
 
 const router = express.Router();
 
@@ -138,6 +140,8 @@ router.delete("/product/:id", (req, res) => {
     }
   });
 });
+
+
 router.put("/product/:id", async (req, res) => {
   const body = req.body;
   const id = req.params.id;
@@ -176,5 +180,58 @@ router.put("/product/:id", async (req, res) => {
     });
   }
 });
+
+router.post('/addToCart',(req , res)=>{
+
+  let { 
+      name
+    , userId
+    , price
+    , unit
+    , unitValue
+    , category
+    , description
+    , url } = req.body
+
+    try{
+
+      if (!name , !userId , !price , !unit , !unitValue , !category , !description) {
+        res.status(400).send("required parameters missing");
+        return;
+      }
+
+      else{
+
+        userProduct.create({
+          name : name,
+          userId: userId,
+          price : price,
+          unit : unit,
+          unitValue: category,
+          description : unitValue,
+          category : description,
+          url : url,
+
+        },(err)=>{
+          if (!err) {
+            res.status(201).send({ message: "product added to cart" });
+          } else {
+            res.status(500).send({ message: "internal server error" });
+          }
+        })
+      }
+
+
+    }
+
+
+    catch(err){
+      console.log(err);
+    }
+
+
+
+
+})
 
 export default router;
