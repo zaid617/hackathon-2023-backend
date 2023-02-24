@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const MONGODBURI = "mongodb+srv://zaid617:abc123456@cluster0.1srlrtd.mongodb.net/hackathonDB?retryWrites=true&w=majority"
 
 let productSchema = new mongoose.Schema({
+
   name: { type: String, required: true },
   price: { type: Number, required: true },
   unit: { type: String, required: true },
@@ -16,6 +17,10 @@ let productSchema = new mongoose.Schema({
   
 });
 export const AddProductModel = mongoose.model('products', productSchema);
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 
 let userProductsSchema = new mongoose.Schema({
 
@@ -32,8 +37,29 @@ let userProductsSchema = new mongoose.Schema({
   isDeleted: {type:Boolean , default: false}
 
 });
-export const userProduct = mongoose.model('userProducts', userProductsSchema);
+export const userProducts = mongoose.model('userProducts', userProductsSchema);
 
+////////////////////////////////////////////////////////////////////////////////
+
+
+let orderProductsSchema = new mongoose.Schema({
+
+  name: { type: String, required: true },
+  userId: { type: String, required: true },
+  price: { type: Number, required: true },
+  unit: { type: String, required: true },
+  unitValue: { type: Number, required: true },
+  description: { type: String},
+  category: { type: String},
+  url: { type: String},
+  status: { type: String , default: "pending"},
+  createdOn: { type: Date, default: Date.now },
+  isDeleted: {type:Boolean , default: false}
+
+});
+export const orderProducts = mongoose.model('orderProducts', orderProductsSchema);
+
+////////////////////////////////////////////////////////////////////////////////
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String },
@@ -47,6 +73,7 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ firstName: "text", lastName: "text" });
 export const userModel = mongoose.model("Users", userSchema);
 
+///////////////////////////////////////////////////////////////////////
 
 const otpSchema = new mongoose.Schema({
   otp: String,

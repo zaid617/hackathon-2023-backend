@@ -68,10 +68,10 @@ app.use("/api/v1", (req, res, next) => {
   });
 });
 
+app.use("/api/v1", getUser);
 
 app.use("/api/v1", productApis);
 
-app.use("/api/v1", getUser);
 
 const __dirname = path.resolve();
 

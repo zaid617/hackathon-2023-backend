@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { AddProductModel } from "../dbrepo/models.mjs";
-import { userProduct } from "../dbrepo/models.mjs";
+import { userProducts } from "../dbrepo/models.mjs";
 
 
 const router = express.Router();
@@ -181,7 +181,7 @@ router.put("/product/:id", async (req, res) => {
   }
 });
 
-router.post('/addToCart',(req , res)=>{
+router.post('/addtocart',(req , res)=>{
 
   let { 
       name
@@ -195,36 +195,40 @@ router.post('/addToCart',(req , res)=>{
 
     try{
 
-      if (!name , !userId , !price , !unit , !unitValue , !category , !description) {
+      if (!name , !userId , !price , !unit , !unitValue ) {
+
         res.status(400).send("required parameters missing");
+
         return;
       }
 
       else{
 
-        userProduct.create({
-          name : name,
-          userId: userId,
-          price : price,
-          unit : unit,
-          unitValue: category,
-          description : unitValue,
-          category : description,
-          url : url,
-
-        },(err)=>{
-          if (!err) {
-            res.status(201).send({ message: "product added to cart" });
-          } else {
-            res.status(500).send({ message: "internal server error" });
+        userProducts.create(
+          {
+             name:name
+            ,userId:userId
+            ,price:price
+            ,unit:unit
+            ,unitValue:unitValue
+            ,description:description
+            ,category:category
+            ,url:url,
+  
+          },
+          (err) => {
+            if (!err) {
+              res.status(200).send({ message: "product is added to cart" });
+            } else {
+              res.status(500).send({ message: "internal server error" });
+            }
           }
-        })
+        );
+  
       }
 
 
     }
-
-
     catch(err){
       console.log(err);
     }
