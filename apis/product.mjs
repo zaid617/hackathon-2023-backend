@@ -6,6 +6,8 @@ import { userProducts } from "../dbrepo/models.mjs";
 
 const router = express.Router();
 
+// add product
+
 router.post("/product" , (req, res) => {
 
       let { 
@@ -61,6 +63,7 @@ router.post("/product" , (req, res) => {
 
 });
 
+// getting all products
 
 router.get("/getProducts", (req, res) => {
 
@@ -82,8 +85,6 @@ router.get("/getProducts", (req, res) => {
           data: data,
         });
 
-        console.log(data);
-
       } else {
         res.status(500).send({
           message: "server error",
@@ -92,6 +93,8 @@ router.get("/getProducts", (req, res) => {
     }
   );
 });
+
+// searching products
 
 router.get("/product/:name", (req, res) => {
   console.log(req.params.name);
@@ -116,6 +119,7 @@ router.get("/product/:name", (req, res) => {
   });
 });
 
+// delete product
 
 router.delete("/product/:id", (req, res) => {
   const id = req.params.id;
@@ -141,6 +145,7 @@ router.delete("/product/:id", (req, res) => {
   });
 });
 
+// update product
 
 router.put("/product/:id", async (req, res) => {
   const body = req.body;
@@ -180,6 +185,8 @@ router.put("/product/:id", async (req, res) => {
     });
   }
 });
+
+// add to cart product
 
 router.post('/addtocart',(req , res)=>{
 
@@ -235,6 +242,40 @@ router.post('/addtocart',(req , res)=>{
 
 
 
+
+})
+
+// get cart product
+
+router.get("/mycart/:id" , (req , res)=>{
+
+  let id = req.params.id;
+  
+   userProducts.find( {
+     userId: id
+   },{},    
+     {
+     sort: { _id: -1 },
+     limit: 100,
+     skip: 0,
+     }, 
+    
+     (err, data) => {
+
+       if (!err) {
+         res.send({
+           message: "got all cart products successfully",
+           data: data,
+         });
+
+       } else {
+         res.status(500).send({
+           message: "server error",
+         });
+       }
+     }
+    
+     )
 
 })
 
