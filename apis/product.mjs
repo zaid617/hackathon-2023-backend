@@ -145,6 +145,43 @@ router.delete("/product/:id", (req, res) => {
   });
 });
 
+
+
+// delete all cart product
+
+router.delete("/cartproduct/:id", (req, res) => {
+
+  const id = req.params.id;
+
+  console.log(id);
+
+  userProducts.deleteMany(
+    
+    { userId: id  },(err, deletedData) => {
+
+    if (!err) {
+      
+        res.send({
+
+          message: "Products have been deleted successfully",
+          data: deletedData
+
+        });
+
+      }
+
+      else {
+        res.status(404);
+        res.send({
+          message: "No Product found with this id: " + id,
+        });
+
+      }
+   
+    
+  });
+});
+
 // update product
 
 router.put("/product/:id", async (req, res) => {
