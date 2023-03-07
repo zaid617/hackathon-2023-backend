@@ -329,11 +329,13 @@ router.post('/order', (req , res )=>{
    userId,
    address,
    user,
-   number,
+   numbers,
    products,
    total
 
  } = req.body
+
+ console.log(numbers);
 
   try{
 
