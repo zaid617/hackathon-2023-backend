@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { AddProductModel } from "../dbrepo/models.mjs";
 import { userProducts } from "../dbrepo/models.mjs";
+import { orderProducts } from "../dbrepo/models.mjs";
 
 
 const router = express.Router();
@@ -313,6 +314,66 @@ router.get("/mycart/:id" , (req , res)=>{
      }
     
      )
+
+})
+
+// place order
+
+router.post('/order', (req , res )=>{
+
+  let { 
+    name
+  , userId
+  , price
+  , unit
+  , unitValue
+  , category
+  , description
+  , url } = req.body
+
+  try{
+
+    if (!name , !userId , !price , !unit , !unitValue ) {
+
+      res.status(400).send("required parameters missing");
+
+      return;
+    }
+
+    else{
+
+      orderProducts.create(
+        {
+           name:name
+          ,userId:userId
+          ,price:price
+          ,unit:unit
+          ,unitValue:unitValue
+          ,description:description
+          ,category:category
+          ,url:url
+          ,address:address,
+          user:user
+          ,email:email,
+
+        },
+        (err) => {
+          if (!err) {
+            res.status(200).send({ message: "order confirm" });
+          } else {
+            res.status(500).send({ message: "internal server error" });
+          }
+        }
+      );
+
+    }
+
+
+  }
+  catch(err){
+    console.log(err);
+  }
+
 
 })
 
