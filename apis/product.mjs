@@ -329,7 +329,7 @@ router.post('/order', (req , res )=>{
    userId,
    address,
    user,
-   email,
+   number,
    products,
    total
 
@@ -337,7 +337,7 @@ router.post('/order', (req , res )=>{
 
   try{
 
-    if (!userId , !address , !user , !email , !total, !products ) {
+    if (!userId , !address , !user , !number , !total, !products ) {
 
       res.status(400).send("required parameters missing");
 
@@ -352,7 +352,7 @@ router.post('/order', (req , res )=>{
           userId:userId
           ,address:address
           ,user:user
-          ,email:email
+          ,number:number
           ,total:total
 
         },
@@ -377,6 +377,40 @@ router.post('/order', (req , res )=>{
 
 
 })
+
+// get user order products
+
+router.get('/getuserorder/:id' , (req , res)=>{
+
+  let id = req.params.id;
+  
+  orderProducts.find( {
+     userId: id
+   },{},    
+     {
+     sort: { _id: -1 },
+     limit: 100,
+     skip: 0,
+     }, 
+    
+     (err, data) => {
+
+       if (!err) {
+         res.send({
+           message: "got all order products successfully",
+           data: data,
+         });
+
+       } else {
+         res.status(500).send({
+           message: "server error",
+         });
+       }
+     }
+    
+     )
+
+} )
 
 
 
