@@ -335,7 +335,6 @@ router.post('/order', (req , res )=>{
 
  } = req.body
 
- console.log(numbers);
 
   try{
 
