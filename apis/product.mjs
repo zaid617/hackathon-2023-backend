@@ -339,7 +339,7 @@ router.post('/order', (req , res )=>{
 
   try{
 
-    if (!userId , !address , !user , !number , !total, !products ) {
+    if (!userId , !address , !user , !numbers , !total, !products ) {
 
       res.status(400).send("required parameters missing");
 
