@@ -44,17 +44,11 @@ export const userProducts = mongoose.model('userProducts', userProductsSchema);
 
 let orderProductsSchema = new mongoose.Schema({
 
-  name: { type: String, required: true },
+  products: { type: Array, default:[], required: true },
   user: { type: String, required: true },
   email: { type: String, required: true },
   userId: { type: String, required: true },
-  price: { type: Number, required: true },
-  unit: { type: String, required: true },
   address: { type: String},
-  unitValue: { type: Number, required: true },
-  description: { type: String},
-  category: { type: String},
-  url: { type: String},
   status: { type: String , default: "pending"},
   createdOn: { type: Date, default: Date.now },
   isDeleted: {type:Boolean , default: false}

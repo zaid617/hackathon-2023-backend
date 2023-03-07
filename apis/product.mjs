@@ -95,6 +95,8 @@ router.get("/getProducts", (req, res) => {
   );
 });
 
+
+
 // searching products
 
 router.get("/product/:name", (req, res) => {
@@ -119,6 +121,7 @@ router.get("/product/:name", (req, res) => {
     }
   });
 });
+
 
 // delete product
 
@@ -322,18 +325,18 @@ router.get("/mycart/:id" , (req , res)=>{
 router.post('/order', (req , res )=>{
 
   let { 
-    name
-  , userId
-  , price
-  , unit
-  , unitValue
-  , category
-  , description
-  , url } = req.body
+    
+   userId,
+   address,
+   user,
+   email,
+   products
+
+ } = req.body
 
   try{
 
-    if (!name , !userId , !price , !unit , !unitValue ) {
+    if (!userId , !address , !user , !email , !products ) {
 
       res.status(400).send("required parameters missing");
 
@@ -344,23 +347,19 @@ router.post('/order', (req , res )=>{
 
       orderProducts.create(
         {
-           name:name
-          ,userId:userId
-          ,price:price
-          ,unit:unit
-          ,unitValue:unitValue
-          ,description:description
-          ,category:category
-          ,url:url
-          ,address:address,
-          user:user
+          products:products,
+          userId:userId
+          ,address:address
+          ,user:user
           ,email:email,
 
         },
         (err) => {
+
           if (!err) {
             res.status(200).send({ message: "order confirm" });
-          } else {
+          }
+           else {
             res.status(500).send({ message: "internal server error" });
           }
         }
@@ -376,5 +375,7 @@ router.post('/order', (req , res )=>{
 
 
 })
+
+
 
 export default router;
