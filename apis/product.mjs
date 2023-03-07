@@ -352,7 +352,7 @@ router.post('/order', (req , res )=>{
           userId:userId
           ,address:address
           ,user:user
-          ,number:number
+          ,numbers:number
           ,total:total
 
         },
