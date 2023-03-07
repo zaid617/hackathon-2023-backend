@@ -330,13 +330,14 @@ router.post('/order', (req , res )=>{
    address,
    user,
    email,
-   products
+   products,
+   total
 
  } = req.body
 
   try{
 
-    if (!userId , !address , !user , !email , !products ) {
+    if (!userId , !address , !user , !email , !total, !products ) {
 
       res.status(400).send("required parameters missing");
 
@@ -351,7 +352,8 @@ router.post('/order', (req , res )=>{
           userId:userId
           ,address:address
           ,user:user
-          ,email:email,
+          ,email:email
+          ,total:total
 
         },
         (err) => {
