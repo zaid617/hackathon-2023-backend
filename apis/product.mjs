@@ -125,7 +125,7 @@ router.get("/product/:name", (req, res) => {
 
 // searching category
 
-router.get("/products/:name", (req, res) => {
+router.get("/category/:name", (req, res) => {
 
   const querryName = req.params.name;
   AddProductModel.find({ category:  `${querryName}` }, (err, data) => {
