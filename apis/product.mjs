@@ -413,6 +413,71 @@ router.get('/getuserorder/:id' , (req , res)=>{
 
 } )
 
+// getting all ordered products
+
+router.get("/getallorders", (req, res) => {
+
+  orderProducts.find(
+
+    { isDeleted: false },{},
+
+    {
+      sort: { _id: -1 },
+      limit: 100,
+      skip: 0,
+    },
+
+    (err, data) => {
+
+      if (!err) {
+        res.send({
+          message: "got all products successfully",
+          data: data,
+        });
+
+      } else {
+        res.status(500).send({
+          message: "server error",
+        });
+      }
+    }
+  );
+});
+
+/////confirm order
+
+router.put('/orderSend/:id', async (req,res)=>{
+
+  const id = req.params.id;
+
+  try {
+
+    let data = await orderProducts
+      .findByIdAndUpdate(
+        id,
+        {
+          status: "Delivered",
+          isDeleted: true,
+        },
+
+        { new: true }
+
+      )
+      .exec();
+
+    console.log("updated",data);
+
+    res.send({
+      message: "product sended successfully",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "server error",
+    });
+  }
+
+})
+
 
 
 export default router;

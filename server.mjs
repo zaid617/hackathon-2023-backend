@@ -72,6 +72,8 @@ app.use("/api/v1", getUser);
 
 app.use("/api/v1", productApis);
 
+//how to use multer in node js?
+
 
 const __dirname = path.resolve();
 
