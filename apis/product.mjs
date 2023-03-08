@@ -100,9 +100,35 @@ router.get("/getProducts", (req, res) => {
 // searching products
 
 router.get("/product/:name", (req, res) => {
-  console.log(req.params.name);
+
   const querryName = req.params.name;
   AddProductModel.find({ name: { $regex: `${querryName}` } }, (err, data) => {
+    if (!err) {
+      if (data) {
+        res.send({
+          message: `get product by success`,
+          data: data,
+        });
+      } else {
+        res.status(404).send({
+          message: "product not found",
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: "server error",
+      });
+    }
+  });
+});
+
+
+// searching category
+
+router.get("/products/:name", (req, res) => {
+
+  const querryName = req.params.name;
+  AddProductModel.find({ category:  `${querryName}` }, (err, data) => {
     if (!err) {
       if (data) {
         res.send({
